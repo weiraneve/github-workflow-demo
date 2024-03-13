@@ -11,13 +11,13 @@ jobs:
     steps:
       # Step 1: Check out the repository
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       
       # Step 2: (Optional) Set up your language/runtime environment, e.g. Node, Python, etc.
-      # - name: Setup Node.js environment
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     node-version: '14'
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
       
       # Step 3: Get Committer Info with GitHub API
       - name: Get Committer Info
