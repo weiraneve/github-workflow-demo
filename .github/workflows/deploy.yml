@@ -1,0 +1,59 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      
+      # Step 2: (Optional) Set up your language/runtime environment, e.g. Node, Python, etc.
+      # - name: Setup Node.js environment
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: '14'
+      
+      # Step 3: Get Committer Info with GitHub API
+      - name: Get Committer Info
+        id: committer-info
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const commit = await github.rest.repos.getCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.sha
+            });
+            return {
+              name: commit.data.commit.committer.name,
+              email: commit.data.commit.committer.email
+            }
+      
+      # Step 4: Print Committer Info
+      - name: Print Committer Name and Email
+        run: |
+          echo "Committer Name: ${{ steps.committer-info.outputs.name }}"
+          echo "Committer Email: ${{ steps.committer-info.outputs.email }}"
+      
+      # Step 5: Build the Project (Example)
+      # - name: Build
+      #   run: npm install && npm run build
+      
+      # Step 6: Deploy the Project (Simulated)
+      # Replace this with your actual deployment steps, e.g. upload artifacts to a server, deploy to cloud services, etc.
+      - name: Deploy (Simulation)
+        run: |
+          echo "Deploying the project simulated by ${{ github.actor }}"
+          echo "If this were a real deployment, you could use SSH, FTP, cloud CLI, or other deployment tools."
+      
+      # Step 7: Notify somewhere about the deployment (optional)
+      # - name: Notify Slack or Teams
+      #   uses: some/notification/action
+      #   with:
+      #     message: "Deployment done by ${{ steps.committer-info.outputs.name }}"
